@@ -40,4 +40,10 @@ class UserController extends Controller
 
         return response($user, 202);
     }
+
+    public function destroy($id) {
+        User::destroy($id);
+
+        return response(null, 204);
+    }
 }
