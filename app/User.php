@@ -32,7 +32,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiToken, Notifiable;
 
     /**
      * The attributes that are mass assignable.
