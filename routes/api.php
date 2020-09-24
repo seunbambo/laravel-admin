@@ -18,8 +18,11 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('users', 'UserController@index');
-Route::get('users/{id}', 'UserController@show');
-Route::post('users', 'UserController@store');
-Route::put('users/{id}', 'UserController@update');
-Route::delete('users/{id}', 'UserController@destroy');
+// Route::get('users', 'UserController@index');
+// Route::get('users/{id}', 'UserController@show');
+// Route::post('users', 'UserController@store');
+// Route::put('users/{id}', 'UserController@update');
+// Route::delete('users/{id}', 'UserController@destroy');
+
+Route::post('login', 'AuthController@login');
+Route::apiResource('users', 'UserController');
