@@ -30,10 +30,14 @@ use Laravel\Passport\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read int|null $clients_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
+ * @property-read int|null $tokens_count
  */
 class User extends Authenticatable
 {
-    use Notifiable, HasApiToken;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -41,7 +45,7 @@ class User extends Authenticatable
      * @var array
      */
 
-     protected $guarded = ['id'];
+    protected $guarded = ['id'];
 
     // protected $fillable = [
     //     'first_name', 'last_name', 'email', 'password',
