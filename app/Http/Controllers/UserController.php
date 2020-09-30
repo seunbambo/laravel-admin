@@ -55,7 +55,12 @@ class UserController extends Controller
 
     public function user()
     {
-        return new UserResource(\Auth::User());
+        $user = \Auth::User();
+        return (new UserResource($user))->additional([
+            'data' => [
+                'permissions' => $user->permissions()
+            ]
+        ]);
     }
 
     public function updateInfo(UpdateInfoRequest $request)
