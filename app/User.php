@@ -82,7 +82,18 @@ class User extends Authenticatable
         return $this->role->permissions->pluck('name');
     }
 
-    public function hasAccess($access) {
+    public function hasAccess($access)
+    {
         return $this->permissions()->contains($access);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_influencer === 0;
+    }
+
+    public function isInfluencer(): bool
+    {
+        return $this->is_influencer === 1;
     }
 }

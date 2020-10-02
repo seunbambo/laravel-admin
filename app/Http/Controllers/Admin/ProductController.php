@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\ProductResource;
 use App\Product;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\ProductCreateRequest;
 use Gate;
 
-class ProductController extends Controller
+class ProductController
 {
     public function index()
     {

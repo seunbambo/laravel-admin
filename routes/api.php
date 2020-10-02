@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,24 +15,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-// Route::get('users', 'UserController@index');
-// Route::get('users/{id}', 'UserController@show');
-// Route::post('users', 'UserController@store');
-// Route::put('users/{id}', 'UserController@update');
-// Route::delete('users/{id}', 'UserController@destroy');
-
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('user', 'UserController@user');
+// Common routes
+Route::group([
+    'middleware' => 'auth:api',
+], function () {
+    Route::get('user', 'AuthController@user');
+    Route::put('users/info', 'AuthController@updateInfo');
+    Route::put('users/password', 'AuthController@updatePassword');
+});
+
+//  Admin routes
+Route::group([
+    'middleware' => 'auth:api',
+    'prefix' => 'admin',
+    'namespace' => 'Admin'
+], function () {
+
     Route::get('chart', 'DashboardController@chart');
-    Route::put('users/info', 'UserController@updateInfo');
-    Route::put('users/password', 'UserController@updatePassword');
     Route::post('upload', 'ImageController@upload');
     Route::get('export', 'OrderController@export');
 
@@ -40,4 +43,12 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('products', 'ProductController');
     Route::apiResource('orders', 'OrderController')->only('index', 'show');
     Route::apiResource('permissions', 'PermissionController')->only('index');
+});
+
+// Influencer routes
+Route::group([
+    'prefix' => 'influencer',
+    'namespace' => 'Influencer'
+], function () {
+    Route::get('products', 'ProductController@index');
 });

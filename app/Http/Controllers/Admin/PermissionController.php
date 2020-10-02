@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Permission;
 use App\Http\Resources\PermissionResource;
 use Illuminate\Http\Request;
 
-class PermissionController extends Controller
+class PermissionController
 {
     public function indexx()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\RoleResource;
 use App\Role;
@@ -8,7 +8,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RoleController extends Controller
+class RoleController
 {
     /**
      * Display a listing of the resource.
