@@ -37,6 +37,8 @@ use Laravel\Passport\HasApiTokens;
  * @property int $role_id
  * @property-read \App\Role $role
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRoleId($value)
+ * @property int $is_influencer
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereIsInfluencer($value)
  */
 class User extends Authenticatable
 {
@@ -74,7 +76,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->hasOneThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
     }
 
     public function permissions()
