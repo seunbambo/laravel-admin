@@ -29,7 +29,7 @@ Route::group([
 
 //  Admin routes
 Route::group([
-    'middleware' => 'auth:api',
+    'middleware' => ['auth:api', 'scope:admin'],
     'prefix' => 'admin',
     'namespace' => 'Admin'
 ], function () {
