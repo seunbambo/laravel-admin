@@ -19,13 +19,15 @@ class AuthController
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
 
-            $token = $user->createToken('admin')->accessToken;
+            $scope = $request->input('scope');
+
+            $token = $user->createToken($scope, [$scope])->accessToken;
 
             return ['token' => $token];
         }
 
         return response([
-            'error' => 'Invalid crededntials'
+            'error' => 'Invalid credentials'
         ], 401);
     }
 
