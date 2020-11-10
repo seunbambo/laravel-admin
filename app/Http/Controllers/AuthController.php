@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
-use Symphony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Resources\UserResource;
+use Symfony\Component\HttpFoundation\Response as Response;
 
 class AuthController
 {
@@ -20,6 +20,12 @@ class AuthController
             $user = Auth::user();
 
             $scope = $request->input('scope');
+
+            if ($user->isInfluencer() && $scope !== 'influencer') {
+                return response([
+                    'error' => 'Access denied!',
+                ], Response::HTTP_FORBIDDEN);
+            }
 
             $token = $user->createToken($scope, [$scope])->accessToken;
 

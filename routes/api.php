@@ -27,7 +27,7 @@ Route::group([
     Route::put('users/password', 'AuthController@updatePassword');
 });
 
-//  Admin routes
+//  Admin routes 
 Route::group([
     'middleware' => ['auth:api', 'scope:admin'],
     'prefix' => 'admin',
@@ -51,4 +51,9 @@ Route::group([
     'namespace' => 'Influencer'
 ], function () {
     Route::get('products', 'ProductController@index');
+
+    Route::group([
+        'middleware' => ['auth:api', 'scope:influencer'],
+    ], function () {
+    });
 });
