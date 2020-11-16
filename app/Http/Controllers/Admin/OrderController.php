@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Resources\OrderResource;
 use App\Order;
 use Gate;
-use Illuminate\Http\Request;
 use Response;
 
 class OrderController
