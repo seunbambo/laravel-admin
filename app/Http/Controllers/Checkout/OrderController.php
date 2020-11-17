@@ -14,7 +14,30 @@ class OrderController
     public function store(Request $request)
     {
 
+        $request->validate([
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email',
+            'code' => 'required|string',
+            // 'user_id' => 'required|integer',
+            // 'influencer_email' => 'required|email',
+            // 'address' => 'required|string',
+            // 'address2' => 'required|string',
+            // 'city' => 'required|string',
+            // 'country' => 'required|string',
+            // 'zip' => 'required|integer',
+            // 'price' => 'required|integer',
+            // 'product_id' => 'required|integer',
+            // 'order_id' => 'required|integer',
+            // 'quantity' => 'required|integer',
+            // 'zip' => 'required|integer',
+            // 'influencer_revenue' => 'required|integer',
+            // 'admin_revenue' => 'required|integer',
+        ]);
+
         $link = Link::whereCode($request->input('code'))->first();
+
+        dd($link);
 
         DB::beginTransaction();
 
@@ -24,8 +47,8 @@ class OrderController
         $order->last_name = $request->input('last_name');
         $order->email = $request->input('email');
         $order->code = $link->code;
-        $order->user_id = $link->user->id;
-        $order->influencer_email = $link->user->email;
+        $order->user_id = $link->id;
+        $order->influencer_email = $link->email;
         $order->address = $request->input('address');
         $order->address2 = $request->input('address2');
         $order->city = $request->input('city');
