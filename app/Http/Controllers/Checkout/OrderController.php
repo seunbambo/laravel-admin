@@ -8,6 +8,7 @@ use App\OrderItem;
 use App\Product;
 use DB;
 use Illuminate\Http\Request;
+use Cartalyst\Stripe\Stripe;
 
 class OrderController
 {
@@ -37,7 +38,7 @@ class OrderController
 
         $link = Link::whereCode($request->input('code'))->first();
 
-        dd($link);
+        // dd($link);
 
         DB::beginTransaction();
 
@@ -47,7 +48,7 @@ class OrderController
         $order->last_name = $request->input('last_name');
         $order->email = $request->input('email');
         $order->code = $link->code;
-        $order->user_id = $link->id;
+        $order->user_id = 1;
         $order->influencer_email = $link->email;
         $order->address = $request->input('address');
         $order->address2 = $request->input('address2');
@@ -56,6 +57,8 @@ class OrderController
         $order->zip = $request->input('zip');
 
         $order->save();
+
+        $lineItems = [];
 
         foreach ($request->input('items') as $item) {
             $product = Product::find($item['product_id']);
@@ -69,7 +72,29 @@ class OrderController
             $orderItem->admin_revenue = 0.9 * $product->price * $item['quantity'];
 
             $orderItem->save();
+
+            $lineItems[] = [
+                'name' => $product->title,
+                'description' => $product->description,
+                'images' => [
+                    $product->image,
+                ],
+                'amount' => 100 * $product->price,
+                'currency' => $orderItem->quantity
+            ];
         }
+
+        $stripe = Stripe::make(env('STRIPE_SECRET'));
+
+        $source = $stripe->checkout()->sessions()->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [],
+            'success_url' => env('CHECKOUT_URL') . '/success?source={CHECKOUT_SESSION_ID}',
+            'cancel_url' => env('CHECKOUT_URL') . '/error'
+        ]);
+
+        $order->transaction_id = $source['id'];
+        $order->save();
 
         DB::commit();
 
